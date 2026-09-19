@@ -1,0 +1,4 @@
+author: "Swan"
+delete-after: True
+changes:
+  - bugfix: "fixes GT consultant icon not showing up in the orbit menu"
