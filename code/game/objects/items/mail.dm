@@ -92,7 +92,7 @@
 
 	if(postmarked == TRUE)
 		var/image/postmark_image = image(
-			icon = icon,
+			icon = 'modular_gs/icons/obj/service/bureaucracy.dmi',	// GS13 EDIT: original: icon = icon
 			icon_state = "postmark"
 		)
 		postmark_image.pixel_w = stamp_offset_x + rand(-3, 1)
@@ -100,16 +100,19 @@
 		postmark_image.appearance_flags |= RESET_COLOR|KEEP_APART
 		. += postmark_image
 
-/obj/item/mail/attackby(obj/item/W, mob/user, list/modifiers, list/attack_modifiers)
+/obj/item/mail/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	// Destination tagging
-	if(istype(W, /obj/item/dest_tagger))
-		var/obj/item/dest_tagger/destination_tag = W
+	if(!istype(tool, /obj/item/dest_tagger))
+		return NONE
+	var/obj/item/dest_tagger/destination_tag = tool
 
-		if(sort_tag != destination_tag.currTag)
-			var/tag = uppertext(GLOB.TAGGERLOCATIONS[destination_tag.currTag])
-			to_chat(user, span_notice("*[tag]*"))
-			sort_tag = destination_tag.currTag
-			playsound(loc, 'sound/machines/beep/twobeep_high.ogg', vol = 100, vary = TRUE)
+	if(sort_tag == destination_tag.currTag)
+		return ITEM_INTERACT_BLOCKING
+	var/tag = uppertext(GLOB.TAGGERLOCATIONS[destination_tag.currTag])
+	to_chat(user, span_notice("*[tag]*"))
+	sort_tag = destination_tag.currTag
+	playsound(loc, 'sound/machines/beep/twobeep_high.ogg', vol = 100, vary = TRUE)
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/mail/multitool_act(mob/living/user, obj/item/tool)
 	if(user.get_inactive_held_item() == src)

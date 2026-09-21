@@ -58,6 +58,16 @@
 	name = "macerinic compound beaker"
 	list_reagents = list(/datum/reagent/fermi_slim = 50)
 
+/obj/item/reagent_containers/cup/bottle/weight_gain_virus
+	name = "Weight gain virus culture bottle"
+	desc = "A small bottle. Contains WG culture virus in synthblood medium."
+	spawned_disease = /datum/disease/advance/weight_gain
+
+/obj/item/reagent_containers/cup/bottle/berry_virus
+	name = "Berry virus culture bottle"
+	desc = "A small bottle. Contains berry culture virus in synthblood medium."
+	spawned_disease = /datum/disease/advance/berry
+
 /*
 //evil fucking donut
 
@@ -134,32 +144,6 @@
 	icon = 'modular_gs/icons/obj/holosign.dmi'
 	icon_state = "holosign_closed"
 
-//ID for fastfood wagies so they can use the tele
-/obj/item/card/id/silver/restaurant
-	name = "silver identification card"
-	desc = "A silver ID, given to the GATO's fast food restaurant workers. Doesn't grant much besides teleporter access."
-	access = list(ACCESS_MAINT_TUNNELS, ACCESS_TELEPORTER)
-
-//gato decal, should be moved elsewhere tbh
-/obj/effect/decal/big_gato //96x96 px sprite
-	name = "GATO"
-	desc = "Your employer! Probably."
-	icon = 'modular_gs/icons/turf/96x96.dmi'
-	icon_state = "gato"
-	layer = ABOVE_OPEN_TURF_LAYER
-	pixel_x = -32
-	pixel_y = -32
-
-/obj/effect/decal/medium_gato //64x64 px sprite
-	name = "GATO"
-	desc = "Your employer! Probably."
-	icon = 'modular_gs/icons/turf/64x64.dmi'
-	icon_state = "gato"
-	layer = ABOVE_OPEN_TURF_LAYER
-	pixel_y = -16
-	pixel_x = -16
-
-
 //collar voice modulators, based on cow/pig masks
 
 /obj/item/clothing/mask/pig/gag //this one only lets you say "oink" and similar
@@ -223,7 +207,7 @@
 	name = "Small Gulp Cup"
 	desc = "A paper cup. It can hold up to 50 units. It's not very strong."
 	icon_state = "small"
-	custom_materials = list(/datum/material/plastic=200)
+	custom_materials = list(/datum/material/plastic = SHEET_MATERIAL_AMOUNT * 0.2)
 	w_class = WEIGHT_CLASS_SMALL
 
 /obj/item/reagent_containers/cup/paper_cup/medium
@@ -231,7 +215,7 @@
 	desc = "It's a paper cup, but you wouldn't call it 'medium' though. It can hold up to 75 units. It's not very strong."
 	icon_state = "medium"
 	volume = 75
-	custom_materials = list(/datum/material/plastic=300)
+	custom_materials = list(/datum/material/plastic = SHEET_MATERIAL_AMOUNT * 0.4)
 	w_class = WEIGHT_CLASS_SMALL
 
 /obj/item/reagent_containers/cup/paper_cup/big
@@ -239,7 +223,7 @@
 	desc = "A huge paper cup, a normal person would struggle to drink it all in one sitting. It can hold up to 120 units. It's not very strong."
 	icon_state = "big"
 	volume = 120
-	custom_materials = list(/datum/material/plastic=500)
+	custom_materials = list(/datum/material/plastic = SHEET_MATERIAL_AMOUNT * 0.6)
 	w_class = WEIGHT_CLASS_NORMAL
 
 /obj/item/reagent_containers/cup/paper_cup/extra_big
@@ -247,7 +231,7 @@
 	desc = "A comically large paper cup. It can hold up to 160 units. It's not very strong."
 	icon_state = "extra_big"
 	volume = 160
-	custom_materials = list(/datum/material/plastic=600)
+	custom_materials = list(/datum/material/plastic = SHEET_MATERIAL_AMOUNT * 0.8)
 	w_class = WEIGHT_CLASS_BULKY
 
 /obj/item/reagent_containers/cup/paper_cup/super_extra_big
@@ -255,11 +239,12 @@
 	desc = "Its called a paper 'cup', but it looks more like an oversized bucket to you. It can hold up to 250 units. It's not very strong."
 	icon_state = "super_extra_big"
 	volume = 250
-	custom_materials = list(/datum/material/plastic=1000)
+	custom_materials = list(/datum/material/plastic = SHEET_MATERIAL_AMOUNT)
 	w_class = WEIGHT_CLASS_HUGE
 
 
 //weapon prefabs
+//put these into a weapon file sometime pls
 
 /obj/item/melee/curator_whip/fattening
 	name = "Calorite Whip"
@@ -267,7 +252,7 @@
 	icon = 'modular_gs/icons/obj/weapons/fat_weapons.dmi'
 	icon_state = "calorite_whip"
 	damtype = FAT
-	force = 40
+	force = 25
 
 /obj/item/melee/curator_whip/permafattening
 	name = "Galbanic Whip"
@@ -275,7 +260,7 @@
 	icon = 'modular_gs/icons/obj/weapons/fat_weapons.dmi'
 	icon_state = "galbanic_whip"
 	damtype = PERMA_FAT
-	force = 30
+	force = 25
 
 /obj/item/gavelhammer/fattening
 	name = "Calorite Hammer"
@@ -285,8 +270,8 @@
 	// righthand_file = 'modular_gs/icons/mob/inhands/melee_righthand_64.dmi'
 	icon_state = "calorite_hammer"
 	damtype = FAT
-	throwforce = 40
-	force = 60
+	throwforce = 25
+	force = 30
 
 /obj/item/gavelhammer/permafattening
 	name = "Galbanic Hammer"
@@ -294,8 +279,8 @@
 	icon = 'modular_gs/icons/obj/weapons/fat_weapons.dmi'
 	icon_state = "galbanic_hammer"
 	damtype = PERMA_FAT
-	throwforce = 10
-	force = 20
+	throwforce = 25
+	force = 30
 
 
 //i'm ngl these don't work :/ (putting in the sprites just in case)

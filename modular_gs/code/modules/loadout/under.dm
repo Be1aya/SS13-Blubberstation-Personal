@@ -27,8 +27,12 @@
 	item_path = /obj/item/clothing/under/color/grey/security
 	restricted_roles = list(ALL_JOBS_SEC)
 
+/datum/loadout_item/uniform/jumpsuit/gs13/security/blue
+	name = "Blue Security Jumpsuit (Modular)"
+	item_path = /obj/item/clothing/under/color/grey/security/blue
+
 /datum/loadout_item/uniform/jumpsuit/gs13/command
-	name = "Security Jumpsuit (Modular)"
+	name = "Command Jumpsuit (Modular)"
 	item_path = /obj/item/clothing/under/color/grey/command
 	restricted_roles = list(ALL_JOBS_CENTRAL, JOB_HEAD_OF_PERSONNEL, JOB_HEAD_OF_SECURITY, JOB_CHIEF_MEDICAL_OFFICER, JOB_CAPTAIN, JOB_CHIEF_ENGINEER, JOB_QUARTERMASTER, JOB_RESEARCH_DIRECTOR)
 
@@ -168,3 +172,7 @@
 /datum/loadout_item/uniform/jumpsuit/gs13/bunny_suit
 	name = "Bunny suit (Modular)"
 	item_path = /obj/item/clothing/under/dual_tone/bunny_suit
+
+/datum/loadout_item/uniform/jumpsuit/gs13/turtleneck
+	name = "Turtleneck Shirt (Modular)"
+	item_path = /obj/item/clothing/under/dual_tone/button_up/turtleneck

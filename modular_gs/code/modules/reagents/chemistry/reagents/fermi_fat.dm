@@ -38,11 +38,11 @@
 		log_game("[M] ckey: [M.key] has ingested fermifat.")
 
 //Effects
-/datum/reagent/fermi_fat/on_mob_life(mob/living/carbon/M)
-	if(!iscarbon(M))
+/datum/reagent/fermi_fat/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
+	if(!iscarbon(affected_mob))
 		return ..()
-	M.adjust_fatness(27, FATTENING_TYPE_CHEM)
-	M.adjust_perma(3, FATTENING_TYPE_CHEM)
+	affected_mob.adjust_fatness(10 * seconds_per_tick, FATTENING_TYPE_CHEM)
+	affected_mob.adjust_perma(2 * seconds_per_tick, FATTENING_TYPE_CHEM)
 	..()
 	. = 1
 
@@ -56,12 +56,12 @@
 	affected_mob.remove_movespeed_modifier(/datum/movespeed_modifier/nutricious_boost/galbanic)
 
 //While overdosed
-/datum/reagent/fermi_fat/overdose_process(mob/living/M)
-	if(!iscarbon(M))
+/datum/reagent/fermi_fat/overdose_process(mob/living/affected_mob, seconds_per_tick, metabolization_ratio)
+	if(!iscarbon(affected_mob))
 		return..()
-	var/mob/living/carbon/C = M
-	C.adjust_fatness(30, FATTENING_TYPE_CHEM)
-	C.adjust_perma(6, FATTENING_TYPE_CHEM)
+	var/mob/living/carbon/carbon = affected_mob
+	carbon.adjust_fatness(10 * seconds_per_tick, FATTENING_TYPE_CHEM)
+	carbon.adjust_perma(3 * seconds_per_tick, FATTENING_TYPE_CHEM)
 	..()
 
 /datum/reagent/fermi_fat/overdose_start(mob/living/M)
@@ -83,7 +83,6 @@
 	affected_carbon.adjust_hunger(1)
 	// affected_carbon.nutrition = max(0, affected_carbon.nutrition-1)
 	if(addiction_mults < 1)
-		// affected_carbon.nutri_mult += 0.5 commenting out since I can't be bothered for now
 		affected_carbon.add_weight_gain_modifier("galbanic", 0.25)
 		addiction_mults = 1
 
@@ -95,7 +94,6 @@
 	affected_carbon.adjust_hunger(2)
 	// affected_carbon.nutrition = max(0, affected_carbon.nutrition-2)
 	if(addiction_mults < 2)
-		// affected_carbon.nutri_mult += 0.5
 		affected_carbon.add_weight_gain_modifier("galbanic", 0.25)
 		addiction_mults = 2
 
@@ -107,14 +105,12 @@
 	affected_carbon.adjust_hunger(4)
 	// affected_carbon.nutrition = max(0, affected_carbon.nutrition-4)
 	if(addiction_mults < 4)
-		// affected_carbon.nutri_mult += 0.5
 		affected_carbon.add_weight_gain_modifier("galbanic", 0.25)
 		addiction_mults = 4
 
 /datum/addiction/fermi_fat/end_withdrawal(mob/living/carbon/carbon)
 	. = ..()
 	if(addiction_mults > 0)
-		// C.nutri_mult = max(1, 0.5 * addiction_mults)
 		carbon.set_weight_gain_modifier("galbanic", 0.25 * addiction_mults)
 
 

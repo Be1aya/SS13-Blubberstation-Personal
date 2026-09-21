@@ -253,7 +253,14 @@ GLOBAL_LIST_INIT(achievements_unlocked, list())
 	to_chat(world, span_infoplain(span_big(span_bold("<BR><BR><BR>The round has ended."))))
 	log_game("The round has ended.")
 	for(var/channel_tag in CONFIG_GET(str_list/channel_announce_end_game))
-		send2chat(new /datum/tgs_message_content("[GLOB.round_id ? "Round [GLOB.round_id]" : "The round has"] just ended."), channel_tag)
+		// GS13 EDIT better round end message
+		// send2chat(new /datum/tgs_message_content("[GLOB.round_id ? "Round [GLOB.round_id]" : "The round has"] just ended."), channel_tag)
+		var/map_name = isnull(SSmap_vote.next_map_config) ? SSmapping.current_map.map_name : SSmap_vote.next_map_config.map_name
+		var/message = "[GLOB.round_id ? "Round [GLOB.round_id]" : "The round"] has just ended. Get ready, a new round on **[map_name]** starts soon! <@&[CONFIG_GET(string/game_alert_role_id)]>"
+		send2chat(new /datum/tgs_message_content(
+			message
+			), channel_tag)
+		// GS13 END EDIT
 	send2adminchat("Server", "Round just ended.")
 
 	/* //SKYRAT EDIT - START (DISCORD Updates)

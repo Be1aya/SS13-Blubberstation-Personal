@@ -141,12 +141,12 @@
 
 	//The fucking TRAIT_FAT mutation is the dumbest shit ever. It makes the code so difficult to work with
 	if(HAS_TRAIT_FROM(human, TRAIT_FAT, OBESITY))//I share your pain, past coder.
-		if(human.overeatduration < (200 SECONDS))
+		if(human.overeatduration < (OVEREAT_TIME_LIMIT))
 			to_chat(human, span_notice("You feel fit again!"))
 			human.remove_traits(list(TRAIT_FAT, TRAIT_OFF_BALANCE_TACKLER), OBESITY)
 
 	else
-		if(human.overeatduration >= (200 SECONDS))
+		if(human.overeatduration >= (OVEREAT_TIME_LIMIT))
 			to_chat(human, span_danger("You suddenly feel blubbery!"))
 			human.add_traits(list(TRAIT_FAT, TRAIT_OFF_BALANCE_TACKLER), OBESITY)
 
@@ -197,9 +197,9 @@
 			to_chat(human, span_notice("You no longer feel vigorous."))
 		human.metabolism_efficiency = 1
 
-	//Gs13 EDIT START
-	handle_gaining_weight(human, nutrition)
-	//GS13 EDIT END
+	// GS13 EDIT START
+	handle_gaining_weight(human, nutrition, seconds_per_tick)
+	// GS13 EDIT END
 
 	//Hunger slowdown for if mood isn't enabled
 	if(CONFIG_GET(flag/disable_human_mood))
@@ -359,7 +359,7 @@
 				if(!disgusted.has_status_effect(/datum/status_effect/spacer/gravity_sickness)) // BUBBER EDIT CHANGE - no more constant spacer stutter anshallah
 					disgusted.adjust_stutter(2 SECONDS)
 				disgusted.adjust_confusion(2 SECONDS)
-			if(SPT_PROB(5, seconds_per_tick) && !disgusted.stat)
+			if(SPT_PROB(5, seconds_per_tick) && !IS_UNCONSCIOUS_OR_CRIT(disgusted))
 				to_chat(disgusted, span_warning("You feel kind of iffy..."))
 			disgusted.adjust_jitter(-6 SECONDS)
 		if(disgust >= DISGUST_LEVEL_VERYGROSS)
@@ -496,6 +496,13 @@
 	metabolism_efficiency = 0.025 //very bad
 	organ_traits = list(TRAIT_NOHUNGER)
 
+/obj/item/organ/stomach/moth
+	name = "moth stomach"
+	desc = "An insectoid stomach adapted to the digestion of textile fibers from the get go. It's estimated that a young mothperson will eat 30 times their body weight in cloth \
+		before their stomach can fully produce the enzymes required to digest other matter as well."
+	icon_state = "spinner-x"
+	organ_traits = list(TRAIT_CLOTH_EATER)
+
 /obj/item/organ/stomach/bone/plasmaman
 	name = "digestive crystal"
 	desc = "A strange crystal that is responsible for metabolizing the unseen energy force that feeds plasmamen."
@@ -511,6 +518,7 @@
 	organ_flags = ORGAN_ROBOTIC
 	maxHealth = STANDARD_ORGAN_THRESHOLD * 0.5
 	metabolism_efficiency = 0.035 // not as good at digestion
+	custom_materials = list(/datum/material/iron = HALF_SHEET_MATERIAL_AMOUNT, /datum/material/glass = HALF_SHEET_MATERIAL_AMOUNT)
 	var/emp_vulnerability = 80 //Chance of permanent effects if emp-ed.
 
 /obj/item/organ/stomach/cybernetic/emp_act(severity)
@@ -518,7 +526,8 @@
 	if(. & EMP_PROTECT_SELF)
 		return
 	if(!COOLDOWN_FINISHED(src, severe_cooldown)) //So we cant just spam emp to kill people.
-		owner.vomit(vomit_flags = (MOB_VOMIT_MESSAGE | MOB_VOMIT_HARM))
+		if(prob(100/severity))
+			owner.vomit(vomit_flags = (MOB_VOMIT_MESSAGE | MOB_VOMIT_HARM))
 		COOLDOWN_START(src, severe_cooldown, 10 SECONDS)
 	if(prob(emp_vulnerability/severity)) //Chance of permanent effects
 		organ_flags |= ORGAN_EMP //Starts organ faliure - gonna need replacing soon.
@@ -547,6 +556,7 @@
 	disgust_metabolism = 3
 	emp_vulnerability = 20
 	metabolism_efficiency = 0.1
+	custom_materials = list(/datum/material/iron = HALF_SHEET_MATERIAL_AMOUNT, /datum/material/glass = HALF_SHEET_MATERIAL_AMOUNT, /datum/material/silver = HALF_SHEET_MATERIAL_AMOUNT)
 
 /obj/item/organ/stomach/cybernetic/tier3/stomach_acid_power(atom/movable/nomnom)
 	if (isliving(nomnom))
